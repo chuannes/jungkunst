@@ -8,7 +8,7 @@ B1 = 1
 
 # Functions for magnetic Field
 def B0(r, theta):
-    return -2 * B0 * np.cos(theta), -B0 * np.sin(theta)
+    return -2 * np.cos(theta), -np.sin(theta)
 
 def B1():
 
@@ -21,3 +21,22 @@ x = np.linspace(-XMAX, XMAX, nx)
 y = np.linspace(-YMAX, YMAX, ny)
 X, Y = np.meshgrid(x, y)
 r, theta = np.hypot(X, Y), np.arctan2(Y, X)
+
+# Magnetic field vector, B = (Ex, Ey), as separate components
+Br1, Btheta1 = B0(r, theta)
+
+# Transform to Cartesian coordinates: NB make North point up, not to the right.
+c, s = np.cos(np.pi/2 + theta), np.sin(np.pi/2 + theta)
+Bx = -Btheta1 * s + Br1 * c
+By = Btheta1 * c + Br1 * s
+
+fig, ax = plt.subplots()
+
+# Plot the streamlines with an appropriate colormap and arrow style
+color = 2 * np.log(np.hypot(Bx, By))
+ax.streamplot(x, y, Bx, By, color=color, linewidth=1.2, density=3, arrowstyle='-', arrowsize=1.5)
+
+ax.set_xlim(-XMAX, XMAX)
+ax.set_ylim(-YMAX, YMAX)
+ax.set_aspect('equal')
+plt.show()
