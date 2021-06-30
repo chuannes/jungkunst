@@ -6,7 +6,7 @@ plt.close('all')
 
 # Magnetic Field Strengths
 B0 = 1000
-B1 = 1
+B1 = 100
 
 y0 = 1.25663706212e-6
 
@@ -36,14 +36,15 @@ By1 = Btheta1 * c + Br1 * s
 Bx2 = Br2 * c
 By2 = Br2 * s
 
+# Add magnetic fields
 Bx = Bx1 + Bx2
 By = By1 + By2
 
+# Plot the streamlines with an appropriate colormap and arrow style
 fig, ax = plt.subplots()
 
-# Plot the streamlines with an appropriate colormap and arrow style
-color = 2 * np.log(np.hypot(Bx2, By2))
-ax.streamplot(x, y, Bx2, By2, color=color, linewidth=1.2, density=3, arrowstyle='-', arrowsize=1.5)
+color = 2 * np.log(np.hypot(Bx, By))
+ax.streamplot(x, y, Bx, By, color=color, linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)
 
 ax.set_xlim(-XMAX, XMAX)
 ax.set_ylim(0, 2*YMAX)
