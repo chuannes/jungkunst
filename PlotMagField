@@ -14,8 +14,8 @@ y0 = 1.25663706212e-6
 def Bpole(r, theta):
     return -B0 * 2 * (1 / r)**3 * np.cos(theta), -B0 * (1 / r)**3 * np.sin(theta)
 
-def Bwire(r, theta):
-    return -B1 * 2 * (1 / r)**3 * np.cos(theta), -B1 * (1 / r)**3 * np.sin(theta)
+def Bwire(r):
+    return -B1 * 2 * (1 / r)**3
 
 # Grid of x, y points on a Cartesian grid
 nx, ny = 64, 64
@@ -27,14 +27,14 @@ r, theta = np.hypot(X, Y), np.arctan2(Y, X)
 
 # Magnetic field vector, B = (Ex, Ey), as separate components
 Br1, Btheta1 = Bpole(r, theta)
-Br2, Btheta2 = Bwire(1, np.pi)
+Br2 = Bwire(r)
 
 # Transform to Cartesian coordinates: NB make North point up, not to the right.
 c, s = np.cos(np.pi/2 + theta), np.sin(np.pi/2 + theta)
 Bx1 = -Btheta1 * s + Br1 * c
 By1 = Btheta1 * c + Br1 * s
-Bx2 = -Btheta2 * s + Br2 * c 
-By2 = Btheta2 * c + Br2 * s 
+Bx2 = Br2 * c
+By2 = Br2 * s
 
 Bx = Bx1 + Bx2
 By = By1 + By2
@@ -42,7 +42,7 @@ By = By1 + By2
 fig, ax = plt.subplots()
 
 # Plot the streamlines with an appropriate colormap and arrow style
-color = 2 * np.log(np.hypot(Bx, By))
+color = 2 * np.log(np.hypot(Bx2, By2))
 ax.streamplot(x, y, Bx2, By2, color=color, linewidth=1.2, density=3, arrowstyle='-', arrowsize=1.5)
 
 ax.set_xlim(-XMAX, XMAX)
