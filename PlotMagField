@@ -8,7 +8,7 @@ B1 = 1
 
 # Functions for magnetic Field
 def B0(r, theta):
-    return -2 * fac * np.cos(theta), -fac * np.sin(theta)
+    return -2 * B0 * np.cos(theta), -B0 * np.sin(theta)
 
 def B1():
 
