@@ -28,7 +28,6 @@ def Bwire(X, Y, pos):
     by = mag * (-np.sin(np.arctan2(Xtrans,Ytrans)))                                
     return bx, by
 
-
 # Grid of x, y points on a Cartesian grid
 nx, ny = 64, 64
 XMAX, YMAX = 40, 40
