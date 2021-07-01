@@ -51,7 +51,7 @@ fig, ax = plt.subplots()
 print(matplotlib.__version__)
 
 #Polt Style
-plt.streamplot(x, y, Bx, By, color='white', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)
+ax.streamplot(x, y, Bx, By, color='black', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)
 
 ax.set_xlim(-XMAX, XMAX)
 ax.set_ylim(0, 2*YMAX)
