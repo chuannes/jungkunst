@@ -1,5 +1,7 @@
 import sys
 import numpy as np
+import matplotlib
+matplotlib.use
 import matplotlib.pyplot as plt
 
 # Magnetic Field Strengths
@@ -46,10 +48,10 @@ By = -(BpoleY + Bwire1Y + Bwire2Y)
 
 # Plot the streamlines with an appropriate colormap and arrow style
 fig, ax = plt.subplots()
+plt.style.use('dark_background')
 
 #Polt Style
-color = 2 * np.log(np.hypot(Bx, By))
-ax.streamplot(x, y, Bx, By, color=color, linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)
+ax.streamplot(x, y, Bx, By, color='white', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)
 
 ax.set_xlim(-XMAX, XMAX)
 ax.set_ylim(0, 2*YMAX)
