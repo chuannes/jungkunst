@@ -43,14 +43,11 @@ Bwire2X, Bwire2Y = Bwire(X, Y, pos2)
 # Add magnetic fields
 Bx = -(BpoleX + Bwire1X + Bwire2X)
 By = -(BpoleY + Bwire1Y + Bwire2Y)
-#Bx = BpoleX
-#By = BpoleY
-#Bx = BwireX
-#By = BwireY
 
 # Plot the streamlines with an appropriate colormap and arrow style
 fig, ax = plt.subplots()
 
+#Polt Style
 color = 2 * np.log(np.hypot(Bx, By))
 ax.streamplot(x, y, Bx, By, color=color, linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)
 
