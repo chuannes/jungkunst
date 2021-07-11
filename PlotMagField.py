@@ -1,16 +1,34 @@
-import sys
+##########################################################################
+# Libraries
+##########################################################################
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib
+from matplotlib.animation import FuncAnimation
 
-# Magnetic Field Strengths
+
+##########################################################################
+# Inputs
+##########################################################################
+
+# Magnetic Field Strengths Multiplocators
 B0 = 100
 B1 = 10
 
-pos1 = [-10, 30]
-pos2 = [0, 50]
+# Data from openCV
+pos = [[-10, 30, 0.9], [0, 50, 1.1]]
 
-# Functions for magnetic Field
+# Plotparameters
+ny = 64
+nx = 64
+XMAX = 50
+YMAX = 80
+
+
+##########################################################################
+# Functions
+##########################################################################
+
+# Functions for magnetic Fields
 def Bpole(X, Y):
     m = [0, 1]
     mr = m[0] * X + m[1] * Y 
@@ -20,40 +38,53 @@ def Bpole(X, Y):
     by = mag * (3 * Y * mr - m[1] * r**2)
     return bx, by
 
-def Bwire(X, Y, pos):
+def Bwire(X, Y, pos, k):
     Xtrans = X - pos[0]
     Ytrans = Y - pos[1]
     r = np.sqrt((Xtrans)**2+(Ytrans)**2)
-    mag = B1 / r**3
+    mag = (k * B1) / (r**3)
     bx = mag * (np.cos(np.arctan2(Xtrans,Ytrans)))
     by = mag * (-np.sin(np.arctan2(Xtrans,Ytrans)))                                
     return bx, by
 
+# Calculate Added Vector Field
+def Bfield(pos):
+    n = len(pos)
+    Bx, By = Bpole(X, Y)
+    for i in range(0, n):
+        BwireX, BwireY = Bwire(X, Y, [pos[i][0], pos[i][1]], pos[i][2])
+        Bx = Bx + BwireX
+        By = By + BwireY
+    #i = 0
+    return Bx, By
+
 # Grid of x, y points on a Cartesian grid
-nx, ny = 64, 64
-XMAX, YMAX = 40, 40
-x = np.linspace(-XMAX, XMAX, nx)
-y = np.linspace(0, 2*YMAX, ny)
-X, Y = np.meshgrid(x, y)
+def meshgrid(nx, ny, XMAX, YMAX):
+    x = np.linspace(-XMAX, XMAX, nx)
+    y = np.linspace(0, YMAX, ny)
+    X, Y = np.meshgrid(x, y)
+    return X, Y
 
-#Calculate Vectors
-BpoleX, BpoleY = Bpole(X, Y)
-Bwire1X, Bwire1Y = Bwire(X, Y, pos1)
-Bwire2X, Bwire2Y = Bwire(X, Y, pos2)
 
-# Add magnetic fields
-Bx = -(BpoleX + Bwire1X + Bwire2X)
-By = -(BpoleY + Bwire1Y + Bwire2Y)
+##########################################################################
+# Setup
+##########################################################################
 
-# Plot the streamlines with an appropriate colormap and arrow style
+# Create Meshgrid
+X, Y = meshgrid(nx, ny, XMAX, YMAX)
+
+# Create Plot
 fig, ax = plt.subplots()
+Bx, By = Bfield(pos)
+ax.streamplot(X, Y, Bx, By, color='black', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)  
+
+# Plot Styling
 #plt.style.use('dark_background')
-print(matplotlib.__version__)
-
-#Polt Style
-plt.streamplot(x, y, Bx, By, color='white', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)
-
 ax.set_xlim(-XMAX, XMAX)
-ax.set_ylim(0, 2*YMAX)
+ax.set_ylim(0, YMAX)
 ax.set_aspect('equal')
+
 plt.show()
+
+#Animation
+#ani = FuncAnimation(fig, update, interval=50, blit=False)
