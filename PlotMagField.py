@@ -20,10 +20,8 @@ B1 = 10
 pos = [[-10, 30, 0.9], [0, 50, 1.1]]
 
 # Plotparameters
-ny = 64
-nx = 64
-XMAX = 50
-YMAX = 80
+XMAX = 50       # -XMAX to XMAX
+YMAX = 80       # 0 to YMAX
 
 
 ##########################################################################
@@ -73,7 +71,7 @@ def meshgrid(nx, ny, XMAX, YMAX):
 ##########################################################################
 
 # Create Meshgrid
-X, Y = meshgrid(nx, ny, XMAX, YMAX)
+X, Y = meshgrid(64, 64, XMAX, YMAX)
 
 # Create Plot
 fig, ax = plt.subplots()
