@@ -30,7 +30,7 @@ YMAX = 80       # 0 to YMAX
 # Functions
 ##########################################################################
 
-# Functions for magnetic Fields
+# Functions for magnetic dipole field
 def Bpole(X, Y):
     m = [0, 1]
     mr = m[0] * X + m[1] * Y 
@@ -40,6 +40,7 @@ def Bpole(X, Y):
     by = mag * (3 * Y * mr - m[1] * r**2)
     return bx, by
 
+# Functions for magnetic wire field
 def Bwire(X, Y, pos, k):
     Xtrans = X - pos[0]
     Ytrans = Y - pos[1]
@@ -49,7 +50,7 @@ def Bwire(X, Y, pos, k):
     by = mag * (-np.sin(np.arctan2(Xtrans,Ytrans)))                                
     return bx, by
 
-# Calculate Added Vector Field
+# Calculate Added Vector field
 def Bfield(pos, i):
     n = len(pos)
     xoff, yoff = wiggle(i)
