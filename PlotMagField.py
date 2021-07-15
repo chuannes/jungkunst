@@ -89,6 +89,7 @@ ax.set_xlim(-XMAX, XMAX)
 ax.set_ylim(0, YMAX)
 ax.set_aspect('equal')
 
+
 # Animation
 ani = FuncAnimation(fig, update, fargs=(field, X, Y), interval=50, blit=False)
 
