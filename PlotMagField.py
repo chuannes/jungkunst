@@ -17,7 +17,7 @@ B0 = 100
 B1 = 10
 
 # Data from openCV
-pos = [[-10, 30, 0.9], [0, 50, 1.1]]
+pos = [[-10, 20, 1], [40, 70, 1], [-30, 50, 1]]
 
 # Plotparameters
 XMAX = 50       # -XMAX to XMAX
@@ -74,9 +74,14 @@ def meshgrid(nx, ny, XMAX, YMAX):
 X, Y = meshgrid(64, 64, XMAX, YMAX)
 
 # Create Plot
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(1,1)
 Bx, By = Bfield(pos)
-ax.streamplot(X, Y, Bx, By, color='black', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)  
+field = ax.streamplot(X, Y, Bx, By, color='black', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)  
+
+def update(num, field):
+    Bx, By = Bfield(pos)
+    field.__setattr__(Bx, num*By)
+    return field,
 
 # Plot Styling
 #plt.style.use('dark_background')
@@ -84,7 +89,7 @@ ax.set_xlim(-XMAX, XMAX)
 ax.set_ylim(0, YMAX)
 ax.set_aspect('equal')
 
-plt.show()
+# Animation
+ani = FuncAnimation(fig, update, fargs=(field, X, Y), interval=50, blit=False)
 
-#Animation
-#ani = FuncAnimation(fig, update, interval=50, blit=False)
+plt.show()
