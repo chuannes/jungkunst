@@ -4,6 +4,8 @@
 # Libraries
 ##########################################################################
 import numpy as np
+import matplotlib
+matplotlib.use('TKAgg')
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
@@ -48,9 +50,10 @@ def Bwire(X, Y, pos, k):
     return bx, by
 
 # Calculate Added Vector Field
-def Bfield(pos):
+def Bfield(pos, i):
     n = len(pos)
-    Bx, By = Bpole(X, Y)
+    xoff, yoff = wiggle(i)
+    Bx, By = Bpole(X + xoff, Y + yoff)
     for i in range(0, n):
         BwireX, BwireY = Bwire(X, Y, [pos[i][0], pos[i][1]], pos[i][2])
         Bx = Bx + BwireX
@@ -65,6 +68,26 @@ def meshgrid(nx, ny, XMAX, YMAX):
     X, Y = np.meshgrid(x, y)
     return X, Y
 
+# Wiggle Offest
+def wiggle(i):
+    xoff = np.sin(i/10)/2
+    yoff = np.cos(i/10)/2
+    return xoff, yoff
+
+# Init Canvas
+def init():
+    ax.collections = []
+    ax.patches = []
+    return field
+
+# Update Frame
+def update(i):
+    ax.collections = []
+    ax.patches = []
+    Bx, By = Bfield(pos, i)
+    field = ax.streamplot(X, Y, Bx, By, color='black', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)  
+    return field
+
 
 ##########################################################################
 # Setup
@@ -75,13 +98,10 @@ X, Y = meshgrid(64, 64, XMAX, YMAX)
 
 # Create Plot
 fig, ax = plt.subplots(1,1)
-Bx, By = Bfield(pos)
-field = ax.streamplot(X, Y, Bx, By, color='black', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)  
 
-def update(num, field):
-    Bx, By = Bfield(pos)
-    field.__setattr__(Bx, num*By)
-    return field,
+Bx, By = Bfield(pos, 0.01)
+field = ax.streamplot(X, Y, Bx, By, color='black', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)
+
 
 # Plot Styling
 #plt.style.use('dark_background')
@@ -89,8 +109,6 @@ ax.set_xlim(-XMAX, XMAX)
 ax.set_ylim(0, YMAX)
 ax.set_aspect('equal')
 
-
 # Animation
-ani = FuncAnimation(fig, update, fargs=(field, X, Y), interval=50, blit=False)
-
+ani = FuncAnimation(fig, update, init_func=init, interval=50, blit=False)
 plt.show()
