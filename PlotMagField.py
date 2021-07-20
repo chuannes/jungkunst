@@ -9,6 +9,9 @@ matplotlib.use('TKAgg')
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
+# Plot Styling
+plt.style.use('dark_background')
+
 
 ##########################################################################
 # Inputs
@@ -86,7 +89,7 @@ def update(i):
     ax.collections = []
     ax.patches = []
     Bx, By = Bfield(pos, i)
-    field = ax.streamplot(X, Y, Bx, By, color='black', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)  
+    field = ax.streamplot(X, Y, Bx, By, color='white', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)  
     return field
 
 
@@ -104,12 +107,18 @@ Bx, By = Bfield(pos, 0.01)
 field = ax.streamplot(X, Y, Bx, By, color='white', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)
 
 
-# Plot Styling
-plt.style.use('dark_background')
+# Axes
 ax.set_xlim(-XMAX, XMAX)
 ax.set_ylim(0, YMAX)
 ax.set_aspect('equal')
+plt.axis('off')
 
 # Animation
 ani = FuncAnimation(fig, update, init_func=init, interval=50, blit=False)
+
+# Maximize Window
+mng = plt.get_current_fig_manager()
+mng.resize(*mng.window.maxsize())
+
+# Show Window
 plt.show()
