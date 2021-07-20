@@ -101,11 +101,11 @@ X, Y = meshgrid(64, 64, XMAX, YMAX)
 fig, ax = plt.subplots(1,1)
 
 Bx, By = Bfield(pos, 0.01)
-field = ax.streamplot(X, Y, Bx, By, color='black', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)
+field = ax.streamplot(X, Y, Bx, By, color='white', linewidth=1.2, density=2, arrowstyle='-', arrowsize=1.5)
 
 
 # Plot Styling
-#plt.style.use('dark_background')
+plt.style.use('dark_background')
 ax.set_xlim(-XMAX, XMAX)
 ax.set_ylim(0, YMAX)
 ax.set_aspect('equal')
